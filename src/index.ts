@@ -1,7 +1,10 @@
 import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const app = new Elysia()
+  .use(cors()) // Mengizinkan akses dari frontend
+  .get("/", () => "Hello from Elysia API!")
+  .get("/api/message", () => ({ message: "This is from Elysia API" }))
+  .listen(4000);
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+console.log(`🚀 Backend running at http://localhost:4000`);
