@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UT_User {
+  id         Int     @id @default(autoincrement()) // Primary Key, auto-increment
+  username   String  @unique                       // Username harus unik
+  email      String  @unique                       // Email harus unik
+  password   String                               // Password (hashed)
+  fullName   String?
+  imageProfile String?
+  imageBanner  String?
+  status       Int?
+  createdAt  DateTime @default(now())             // Timestamp otomatis
+  updatedAt  DateTime @updatedAt                  // Auto update timestamp
+}
+
+model PS_Message {
+  id         Int      @id @default(autoincrement())
+  senderId   Int      // ID pengirim
+  toId       Int?
+  chatRoomId Int      // ID room tempat pesan dikirim
+  text       String?  // Pesan teks
+  imageUrl   String?  // Jika ada gambar
+  isRead     Boolean  @default(false)
+  sentAt     DateTime @default(now())
+}
+
+
+model PS_Attachment {
+  id         Int      @id @default(autoincrement())
+  messageId  Int
+  fileUrl    String
+  fileType   String  // "image", "video", "pdf", "doc", dll.
+  uploadedAt DateTime @default(now())
+
+}
+
+model PS_TypingStatus {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  chatRoomId Int
+  isTyping   Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+
+}
+
+
+
