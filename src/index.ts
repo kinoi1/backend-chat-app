@@ -15,6 +15,10 @@ const app = new Elysia()
       return { success: false, data: "Gagal mengambil data pesan", reason: error };
     }
   })
+  .post("/send-chat", async ({ body }) => {
+    console.log("Received message:", body);
+    return { status: "success", message: body };
+  })
   .listen(4000);
 
 

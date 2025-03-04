@@ -25,6 +25,10 @@ export const getAllMessages = async () => {
     }
 };
 
+export const storeChat = async () => {
+
+}
+
 // ✅ Fungsi untuk mengambil pesan berdasarkan chatRoomId
 // export const getMessagesByChatRoom = async (chatRoomId: number) => {
 //   return await prisma.pS_Message.findMany({
