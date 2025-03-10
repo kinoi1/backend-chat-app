@@ -25,14 +25,28 @@ export const getAllMessages = async () => {
     }
 };
 
-export const storeChat = async () => {
+export const storeChat = async (data:any) => {
+        try {
+            // return {data};
+            const { senderId, chatRoomId, text, imageUrl } = data[0];
 
+            if (!senderId || !chatRoomId) {
+              return { success: false, error: "senderId dan chatRoomId wajib diisi" };
+            }
+              
+          // Simpan ke database dengan Prisma
+          const newMessage = await prisma.pS_Message.create({
+            data: {
+              senderId,
+              chatRoomId,
+              text,
+              imageUrl,
+            },
+          });
+      
+          return { success: true, message: newMessage };
+        } catch (error) {
+          console.error("Error sending message:", error);
+          return { success: false, error: error };
+        }
 }
-
-// ✅ Fungsi untuk mengambil pesan berdasarkan chatRoomId
-// export const getMessagesByChatRoom = async (chatRoomId: number) => {
-//   return await prisma.pS_Message.findMany({
-//     where: { chatRoomId },
-//     orderBy: { sentAt: "desc" },
-//   });
-// };

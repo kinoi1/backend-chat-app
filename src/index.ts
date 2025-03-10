@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
-import { getAllMessages } from "./services/chatServices";
+import { getAllMessages, storeChat } from "./services/chatServices";
 
 
 const app = new Elysia()
@@ -16,8 +16,8 @@ const app = new Elysia()
     }
   })
   .post("/send-chat", async ({ body }) => {
-    console.log("Received message:", body);
-    return { status: "success", message: body };
+    const data = await storeChat(body);
+    return data;
   })
   .listen(4000);
 
