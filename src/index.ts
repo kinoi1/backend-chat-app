@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
-import { getAllMessages, storeChat } from "./services/chatServices";
+import { getAllMessages, storeChat, getChat } from "./services/chatServices";
 
 
 const app = new Elysia()
@@ -17,6 +17,10 @@ const app = new Elysia()
   })
   .post("/send-chat", async ({ body }) => {
     const data = await storeChat(body);
+    return data;
+  })
+  .post("/get-chat", async ({ body }) => {
+    const data = await getChat(body);
     return data;
   })
   .listen(4000);

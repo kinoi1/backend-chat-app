@@ -50,3 +50,39 @@ export const storeChat = async (data:any) => {
           return { success: false, error: error };
         }
 }
+
+export const getChat = async (data:any) => {
+    try{
+        const {senderId, toId} = data[0];
+
+        const result = await prisma.$queryRaw`
+        SELECT * FROM (
+        (SELECT 
+            a."id",
+            a."senderId",
+            a."text",
+            a."imageUrl",
+            a."sentAt"
+            FROM "PS_Message" as a
+            WHERE a."toId" = ${toId}
+            AND a."senderId" = ${senderId}
+        )
+        UNION ALL
+        (SELECT 
+            a."id",
+            a."senderId",
+            a."text",
+            a."imageUrl",
+            a."sentAt"
+            FROM "PS_Message" as a
+            WHERE a."toId" = ${senderId}
+            AND a."senderId" = ${toId}
+        )
+        ) as a
+        ORDER BY a."sentAt" ASC;
+    `
+    return result;
+    } catch (error){
+        return {status:false, error:error}
+    }
+}
